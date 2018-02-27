@@ -46,8 +46,13 @@ function reload() {
 		var chart = new CanvasJS.Chart("fixedContainer", {
 			animationEnabled: true,
 			title: {
-				text: "My  crypto wallet:  " + wallet.balance()
+				text: "My portfolio"
 			},
+		subtitles:[
+			{
+				text: `Your current balance is about  ${ wallet.balance() } btc`,
+				fontColor: "lightgray"
+			}],
 			data: [{
 				type: "pie",
 				startAngle: 240,
