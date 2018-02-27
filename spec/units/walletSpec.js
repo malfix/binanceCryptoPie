@@ -23,6 +23,13 @@ describe("Wallet", function(){
     expect(0.01).toEqual(wallet.balance())
   })
 
+
+  it("format label", function() {
+    expect("mycurrency (100.00%)").toEqual(wallet.formatLabel('mycurrency', 0.01, 0.01))
+    expect("mycurrency (50.00%)").toEqual(wallet.formatLabel('mycurrency', 0.01, 0.02))
+    expect("mycurrency (33.33%)").toEqual(wallet.formatLabel('mycurrency', 0.03, 0.09))
+  })
+
   it("add invalid currency", function() {
     wallet.addCurrency('mycurrency', -0.01)
     expect(0.00).toEqual(wallet.balance())
@@ -47,7 +54,17 @@ describe("Wallet", function(){
 
     it("filter map is right with filter", function() {
       expectedCurrencies = new Map();
-      expectedCurrencies.set('Others', 0.01)
+      expectedCurrencies.set(wallet.formatLabel('Others', 0.01, 0.01), 0.01)
+      expect( expectedCurrencies ).toEqual(wallet.filterBelow(0.01))
+    })
+
+    it("filter map is right with filter on multiple elements", function() {
+      wallet.addCurrency('small', 0.01)
+      wallet.addCurrency('big', 1)
+
+      expectedCurrencies = new Map();
+      expectedCurrencies.set(wallet.formatLabel('Others', 0.02, 1.02), 0.02)
+      expectedCurrencies.set(wallet.formatLabel('big', 1, 1.02), 1)
       expect( expectedCurrencies ).toEqual(wallet.filterBelow(0.01))
     })
   })

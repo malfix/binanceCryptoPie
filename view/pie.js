@@ -30,21 +30,23 @@ function invert(){
 
 function reload() {
 	$('#fixedContainer').text("")	;
-		var datapoints = []
+	var wallet = new Wallet();
+
 		$('div.items.f-cb').each(function (idx, v){
 			if (idx > 0  ) {
 				value = parseFloat($(v).find('.equalValue').text());
-				if (value > 0.0001) {
-					name = $(v).find('.fullName').text().replace(/(\r\n|\n|\r|\s)/gm,"");
-					datapoints.push({y: value, label: name})
-				}
+				name = $(v).find('.fullName').text().replace(/(\r\n|\n|\r|\s)/gm,"");
+				wallet.addCurrency(name, value)
 			}
 		});
+		var datapoints = []
+		for (const [key, value] of wallet.filterBelow(0.01).entries())
+			datapoints.push({y: value, label: key})
 
 		var chart = new CanvasJS.Chart("fixedContainer", {
 			animationEnabled: true,
 			title: {
-				text: "My  crypto wallet"
+				text: "My  crypto wallet:  " + wallet.balance()
 			},
 			data: [{
 				type: "pie",
