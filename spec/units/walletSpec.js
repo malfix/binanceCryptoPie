@@ -35,6 +35,18 @@ describe("Wallet", function(){
     expect(0.00).toEqual(wallet.balance())
   })
 
+  it("sort by value works", function() {
+    wallet.addCurrency('a', 0.02)
+    wallet.addCurrency('c', 0.01)
+    wallet.addCurrency('b', 0.07)
+    // by value
+    expect(['b (70.00%)', 'a (20.00%)', 'c (10.00%)'] ).toEqual(Array.from( wallet.filterBelow(0.00).keys() ))
+    expect(['b (70.00%)', 'a (20.00%)', 'c (10.00%)'] ).toEqual(Array.from( wallet.filterBelow(0.00, 1).keys() ))
+    // by name
+    expect(['a (20.00%)', 'b (70.00%)', 'c (10.00%)'] ).toEqual(Array.from( wallet.filterBelow(0.00, 0).keys() ))
+
+  })
+
   describe("when there is yet a valid currency:", function() {
     beforeEach(function() {
       wallet.addCurrency('mycurrency', 0.01)
@@ -47,7 +59,7 @@ describe("Wallet", function(){
 
     it("filter map is right with no filter", function() {
       expectedCurrencies = new Map();
-      expectedCurrencies.set('mycurrency', 0.01)
+      expectedCurrencies.set(wallet.formatLabel('mycurrency',0.01, 0.01), 0.01)
       expect( expectedCurrencies ).toEqual(wallet.filterBelow())
     })
 

@@ -1,6 +1,6 @@
 {
   "name": "Binance Crypto Pie",
-  "description": "Analizza il portafogli",
+  "description": "Your binance wallet on a beautiful pie",
   "version": "4.0",
   "permissions": [
     "https://www.binance.com/userCenter/balances.html"

@@ -36,6 +36,8 @@
   top: 5%;
   margin-left: -200px; /* */
   z-index: 10000;
+	text-align: center;
+	padding: 1em;
 }
 
 #navbar{
